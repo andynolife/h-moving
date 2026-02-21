@@ -1,5 +1,5 @@
 # H
-very cool game i've ever created by myself
+very coolest game i've ever made.
 
 ![demo](demo.gif)
 ## How to run:

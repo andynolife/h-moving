@@ -3,7 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-void movements() {
+struct SomeStuff {
+  int max_y;
+  int max_x;
+  int ch;
+};
+
+void game(char character[1]) {
+
+        struct SomeStuff cordinates;
 	// Starting NCURSES.
 	initscr();
 	cbreak();
@@ -13,23 +21,22 @@ void movements() {
 	refresh();
 
 	// Calculating X and Y Cordinates.
-	int max_y, max_x;
-	getmaxyx(stdscr, max_y, max_x);;
-	char character[] = "H";
+//	int max_y, max_x;
+	getmaxyx(stdscr, cordinates.max_y, cordinates.max_x);
 
 	int y = 5;
-	int x = (max_x - strlen(character)) / 2;
+	int x = (cordinates.max_x - strlen(character)) / 2;
 
-	int ch;
+//	int ch;
 	while (1) {
 		clear();
 		mvprintw(0, 0, "Cordinates:\nX = %d\nY = %d", x, y);
 		mvprintw(y, x, "%s", character);	
 
-		ch = getch();
+		cordinates.ch = getch();
 
 		// Controls.
-		switch (ch) {
+		switch (cordinates.ch) {
 			case KEY_UP: y--; break;
 			case KEY_DOWN: y++; break;
 			case KEY_LEFT: x--; break;
@@ -37,10 +44,10 @@ void movements() {
 		}
 
 		// Wrap-Around Movements with no fancy maths.
-		if (y < 0) y = max_y - 1;
-		if (y >= max_y) y = 0;
+		if (y < 0) y = cordinates.max_y - 1;
+		if (y >= cordinates.max_y) y = 0;
 
-		int max_pos_x = max_x - strlen(character);
+		int max_pos_x = cordinates.max_x - strlen(character);
 
 		if (max_pos_x < 0) max_pos_x = 0;
 
@@ -50,15 +57,15 @@ void movements() {
 			x = 0;
 
 		// When user type 'q' it's breaking and stop the program.
-		if (ch == 'q') {
+		if (cordinates.ch == 'q') {
 			curs_set(1);
 			endwin();
-			break;
+			exit(0);
 		}
 	}
 }
 
 int main() {
-  movements();
-	return 0;
+  game("H");
+  return 0;
 }
